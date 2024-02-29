@@ -1,0 +1,6 @@
+### Swift ###
+
+## User Settings
+xcuserdata/
+*.xcuserstate
+*.DS_Store
