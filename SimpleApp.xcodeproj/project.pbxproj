@@ -20,6 +20,9 @@
 		3E6E4D1D2B90368D006D4CD2 /* Cat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4D1C2B90368D006D4CD2 /* Cat.swift */; };
 		3E6E4D1F2B9037BE006D4CD2 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4D1E2B9037BE006D4CD2 /* RequestError.swift */; };
 		3E6E4D212B903E9C006D4CD2 /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4D202B903E9C006D4CD2 /* HttpMethod.swift */; };
+		3E6E4D242B90D42A006D4CD2 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4D232B90D42A006D4CD2 /* Logger.swift */; };
+		3E6E4D2D2B914CF8006D4CD2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4D2C2B914CF8006D4CD2 /* Utils.swift */; };
+		3E6E4D2F2B916900006D4CD2 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4D2E2B916900006D4CD2 /* FeatureFlags.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		3E6E4D1C2B90368D006D4CD2 /* Cat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cat.swift; sourceTree = "<group>"; };
 		3E6E4D1E2B9037BE006D4CD2 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		3E6E4D202B903E9C006D4CD2 /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
+		3E6E4D232B90D42A006D4CD2 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		3E6E4D2C2B914CF8006D4CD2 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		3E6E4D2E2B916900006D4CD2 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				3E6E4D172B903376006D4CD2 /* Core */,
-				3E6E4D162B903357006D4CD2 /* Utils */,
+				3E6E4D162B903357006D4CD2 /* Utilities */,
 				3E6E4D152B90334E006D4CD2 /* Services */,
 				3E6E4D142B903346006D4CD2 /* ViewModels */,
 				3E6E4D132B903340006D4CD2 /* Views */,
@@ -172,18 +178,20 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		3E6E4D162B903357006D4CD2 /* Utils */ = {
+		3E6E4D162B903357006D4CD2 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				3E6E4D232B90D42A006D4CD2 /* Logger.swift */,
+				3E6E4D2C2B914CF8006D4CD2 /* Utils.swift */,
+				3E6E4D2E2B916900006D4CD2 /* FeatureFlags.swift */,
 			);
-			path = Utils;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		3E6E4D172B903376006D4CD2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				3E6E4CE22B90307A006D4CD2 /* AppDelegate.swift */,
-				3E6E4CE42B90307A006D4CD2 /* SceneDelegate.swift */,
+				3E6E4D252B90D480006D4CD2 /* Delegates */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -201,6 +209,15 @@
 				3E6E4CE62B90307A006D4CD2 /* ViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		3E6E4D252B90D480006D4CD2 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				3E6E4CE22B90307A006D4CD2 /* AppDelegate.swift */,
+				3E6E4CE42B90307A006D4CD2 /* SceneDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,7 +357,10 @@
 				3E6E4D212B903E9C006D4CD2 /* HttpMethod.swift in Sources */,
 				3E6E4D1D2B90368D006D4CD2 /* Cat.swift in Sources */,
 				3E6E4CE52B90307A006D4CD2 /* SceneDelegate.swift in Sources */,
+				3E6E4D2F2B916900006D4CD2 /* FeatureFlags.swift in Sources */,
 				3E6E4D1B2B9033E0006D4CD2 /* ServiceRequestManager.swift in Sources */,
+				3E6E4D2D2B914CF8006D4CD2 /* Utils.swift in Sources */,
+				3E6E4D242B90D42A006D4CD2 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
