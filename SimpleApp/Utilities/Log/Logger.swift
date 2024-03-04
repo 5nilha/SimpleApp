@@ -10,23 +10,27 @@ import Foundation
 /// `Log` represents a log entry with various details about the log event.
 struct Log: Encodable {
     
-    /// The application's host name or identifier.
+    /// `appHost` The application's host name or identifier.
     let appHost: String = Utils.appName
-    /// A string combining the build number and version of the application.
+    /// `appInfo` A string combining the build number and version of the application.
     let appInfo: String = "Build: \(Utils.appBuildNumber), Version: \(Utils.appVersion)"
-    /// The level of the log (e.g., debug, info, error).
+    /// `logLevel` The level of the log (e.g., debug, info, error).
     var logLevel: String?
-    /// The timestamp of when the log event occurred.
+    /// `occurrenceAt` The timestamp of when the log event occurred.
     let occurrenceAt: Date = Date()
-    /// The primary message of the log.
+    /// `logMessage` The primary message of the log.
     var logMessage: String?
-    /// An optional description providing more context about the log event.
+    /// `description` An optional description providing more context about the log event.
     var description: String?
-    /// The name of the function or method that triggered the log event.
+    /// `filename` The name of the file where the log event got triggered.
+    var filename: String?
+    /// `caller` The name of the function or method that triggered the log event.
     var caller: String?
-    /// The line number in the source code where the log event was triggered.
+    /// `line` The line number in the source code where the log event was triggered.
     var line: Int?
-    
+    /// `line` The line number in the source code where the log event was triggered.
+    var currentThread: String? = "\(OperationQueue.current?.underlyingQueue?.label ?? "None") - \(Thread.current)"
+
     /// Prints the log to the console if the `enablePrintLogs` feature flag is active.
     func printLog() {
         guard FeatureFlags.hasFeature(.enablePrintLogs) else { return }
@@ -37,6 +41,7 @@ struct Log: Encodable {
             "APP_INFO: \(appInfo)",
             "LOG_LEVEL: \(logLevel ?? "")",
             "OCCURRENCE_AT: \(occurrenceAt)",
+            threadDescription(),
             callerLineDescription(),
             "DESCRIPTION: \(description ?? "")",
             "LOG_MESSAGE: \(logMessage ?? "")",
@@ -48,8 +53,14 @@ struct Log: Encodable {
     
     /// Helper method to format the caller and line information.
     private func callerLineDescription() -> String {
-        guard let caller = caller, let line = line else { return "" }
-        return "\nCALLER: \(caller)\nLINE: \(line)"
+        guard let fileName = self.filename, let caller = self.caller, let line = self.line else { return "" }
+        return "\nFILE_NAME: \(fileName)\nCALLER: \(caller)\nLINE: \(line)"
+    }
+    
+    /// Helper method to format the caller and line information.
+    private func threadDescription() -> String {
+        guard FeatureFlags.hasFeature(.enableLogThreads), let currentThread =  self.currentThread else { return ""}
+        return "\nCURRENT_THREAD: \(currentThread)"
     }
 }
 
@@ -57,6 +68,7 @@ struct Log: Encodable {
 enum LogLevel {
     case debug
     case info
+    case queue
     case error(Error)
 
     /// Returns a string representation of the log level.
@@ -64,6 +76,7 @@ enum LogLevel {
         switch self {
         case .debug: return "Debug"
         case .info: return "Info"
+        case .queue: return "Queue"
         case .error: return "Error"
         }
     }
@@ -73,7 +86,13 @@ enum LogLevel {
         switch self {
         case .debug: return "Debugging Log"
         case .info: return "Info Log"
-        case .error(let error): return "Error Log: [\(String(describing: error))]"
+        case .queue: return "Queue Log"
+        case .error(let error):
+            if let requestError = error as? RequestError {
+                return "Error Log: \(requestError.logMessage)"
+            } else {
+                return "Error Log: [\(String(describing: error))]"
+            }
         }
     }
     
@@ -82,6 +101,7 @@ enum LogLevel {
         switch self {
         case .debug: return FeatureFlags.hasFeature(.enableLogDebugging)
         case .info: return FeatureFlags.hasFeature(.enableLogInfo)
+        case .queue: return FeatureFlags.hasFeature(.enableLogThreads)
         case .error: return FeatureFlags.hasFeature(.enableLogError)
         }
     }
@@ -91,7 +111,7 @@ enum LogLevel {
 class Logger {
     
     /// A queue for handling log entries asynchronously, ensuring they don't block the main thread.
-    static let logQueue = DispatchQueue(label: "com.\(Utils.appName).logQueue")
+    static fileprivate let logQueue = DispatchQueue(label: "com.\(Utils.appName).logQueue")
     
     /**
     Creates and optionally prints a log entry based on the provided details and the active feature flags.
@@ -102,30 +122,32 @@ class Logger {
     - line: The line number in the source code where the log event was triggered.
     - Returns: An optional `Log` instance if the log was created and printed; otherwise, `nil`.
     */
+    
     @discardableResult
     class func log(_ message: String,
-                    logLevel: LogLevel = .info,
-                    caller: String = #function,
-                    line: Int = #line) -> Log? {
-        
+                   logLevel: LogLevel = .info,
+                   fileName: String = #file,
+                   caller: String = #function,
+                   line: Int = #line) -> Log? {
+
         guard FeatureFlags.hasFeature(.enableLogs), logLevel.isEnabled() else { return nil }
-        
-        
+
         var log = Log(logLevel: logLevel.value,
                       logMessage: message,
-                      description: logLevel.description)
+                      description: logLevel.description,
+                      filename: fileName.components(separatedBy: "/").last ?? fileName)
         
         // Include caller and line information for error logs.
         if case .error = logLevel {
             log.caller = caller
             log.line = line
         }
-        
+
         // Process the log asynchronously to avoid blocking the main thread.
         Logger.logQueue.async {
             log.printLog()
         }
-        
+
         return log
     }
 }
