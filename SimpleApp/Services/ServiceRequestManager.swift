@@ -8,11 +8,11 @@
 import Foundation
 
 /// Defines a completion handler type alias for network requests, parameterized by a generic Decodable type.
-typealias RequestCompletion<T: Decodable> = (Result<T, RequestError>) -> Void
+typealias RequestCompletion<Model: Decodable> = (Result<Model, RequestError>) -> Void
 
 /// Protocol defining the requirements for an API service, including a method to fetch items from a network request.
 protocol APIService {
-    func fetchItems<T: Decodable>(with request: URLRequest, of type: T.Type, completion: @escaping RequestCompletion<T>)
+    func fetchItems<Model: Decodable>(with request: URLRequest, of type: Model.Type, completion: @escaping RequestCompletion<Model>)
 }
 
 /// ServiceRequestManager is  responsible for managing service requests to a network API.
@@ -47,40 +47,64 @@ class ServiceRequestManager: APIService {
     ///   - request: The URLRequest to fetch data from.
     ///   - type: The type of the Decodable model to decode the data into.
     ///   - completion: A closure called with the result of the fetch operation, returning either the decoded model or an error.
-    func fetchItems<T: Decodable>(with request: URLRequest,
-                                  of type: T.Type,
-                                  completion: @escaping RequestCompletion<T>) {
+    func fetchItems<Model: Decodable>(with request: URLRequest,
+                                      of type: Model.Type,
+                                      completion: @escaping RequestCompletion<Model>) {
         
-        let task = session.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    completion(.failure(.networkError(error)))
-                    return
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
+            Logger.log("Fetched Response: URLSession:dataTask", logLevel: .queue)
+            guard let wself = self else { return }
+            
+            do {
+                try wself.checkForError(error: error)
+                try wself.checkURLResponse(response: response)
+                let descodedData = try wself.decodeData(for: type, data: data)
+                
+                DispatchQueue.main.async {
+                    completion(.success(descodedData))
                 }
                 
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    completion(.failure(. responseUnsuccessful))
-                    return
-                }
-                
-                guard 200...299 ~= httpResponse.statusCode else {
-                    completion(.failure(.serverError(statusCode: httpResponse.statusCode)))
-                    return
-                }
-                
-                guard let data = data else {
-                    completion(.failure(.invalidData))
-                    return
-                }
-                
-                do {
-                    let decodedResponse = try JSONDecoder().decode(T.self, from: data)
-                    completion(.success(decodedResponse))
-                } catch {
-                    completion(.failure(.decodingError(error)))
-                }
+            } catch {
+                let requestError = error as? RequestError ?? RequestError.unknownError(error)
+                Logger.log("Error Fetching Response.", logLevel: .error(requestError))
+                completion(.failure(requestError))
             }
         }
         task.resume()
+    }
+    
+    // MARK: PRIVATE METHODS
+    
+    /// `checkForError(:)` Check for the existence of Errors in the server response
+    /// If error is not nil, the method throws a RequestError
+    /// - Parameters:
+    ///   - error: A possible  error returned from the service.
+    private func checkForError(error: Error?) throws {
+        guard let err = error else { return }
+        throw RequestError.networkError(err)
+    }
+    
+    /// `checkURLResponse(:)` Checks and validates the URLResponse returned from the service
+    ///  If response is invalid or has an error, the method throws a RequestError
+    /// - Parameters:
+    ///   - response: The URlResponse returned from the service.
+    private func checkURLResponse(response: URLResponse?) throws {
+        guard let httpResponse = response as? HTTPURLResponse else { throw RequestError.responseUnsuccessful(response) }
+        guard 200...299 ~= httpResponse.statusCode else { throw RequestError.serverError(statusCode: httpResponse.statusCode) }
+        return
+    }
+    
+    /// `decodeData(:)` Decodes the data into a specified Decodable type passed into the argument.
+    /// - Parameters:
+    ///   - type: The type of the Decodable model to decode the data into.
+    ///   - data: A data returned from the service to be decoded
+    private func decodeData<Model: Decodable>(for type: Model.Type, data: Data?) throws -> Model {
+        guard let data = data else {  throw RequestError.invalidData(data) }
+        do {
+            let decodedData = try JSONDecoder().decode(type.self, from: data)
+            return decodedData
+        } catch {
+            throw RequestError.decodingError(error)
+        }
     }
 }

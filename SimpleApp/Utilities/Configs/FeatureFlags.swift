@@ -12,6 +12,7 @@ enum FeatureFlag: String, Codable {
     case enablePrintLogs
     case enableLogDebugging
     case enableLogInfo
+    case enableLogThreads
     case enableLogError
 }
 
@@ -28,7 +29,8 @@ class FeatureFlags {
         .enableLogs,
         .enablePrintLogs,
         .enableLogInfo,
-        .enableLogError
+        .enableLogError,
+        .enableLogThreads
     ]
     
     /**
@@ -59,5 +61,20 @@ class FeatureFlags {
      */
     class func hasFeature(_ feature: FeatureFlag) -> Bool {
         FeatureFlags.features.contains(feature)
+    }
+    
+    /**
+     Checks if a specific feature is enabled by looking for its flag in the `features` set.
+    - Parameter features: The list of `FeatureFlag` to check for activation.
+    - Returns: A Boolean value indicating whether the feature is enabled (`true`) or not (`false`).
+     */
+    class func hasFeatures(_ features: [FeatureFlag]) -> Bool {
+        // FeatureFlags should contain all the features. If one or more is missing, we return false
+        for feature in features {
+            if !FeatureFlags.features.contains(feature) {
+                return false // If FeatureFlags doesn't contain a flag, then the loop is over and we return false
+            }
+        }
+        return true // If all FeaturesFlags contain all the features, then is has all the flags.
     }
 }
