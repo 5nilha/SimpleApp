@@ -41,7 +41,7 @@ class ListViewModelTests: XCTestCase {
             }
         }
         
-        sut.loadData(tag: "cute")
+        sut.loadData(for: "cute")
         wait(for: [expectation], timeout: 1.0)
     }
     
@@ -87,8 +87,8 @@ class ListViewModelTests: XCTestCase {
     }
     
     func testWhenSearchForTag_thenFiltersList() {
-        sut.list = [ImageDetailViewModel(cat: ImageDetail(id: "1", tags: ["cute"])),
-                    ImageDetailViewModel(cat: ImageDetail(id: "2", tags: ["lazy"]))]
+        sut.list = [ImageDetailViewModel(imageDetail: ImageDetail(id: "1", tags: ["cute"])),
+                    ImageDetailViewModel(imageDetail: ImageDetail(id: "2", tags: ["lazy"]))]
         
         XCTAssertEqual(sut.numOfItems, 2)
         
