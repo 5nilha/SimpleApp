@@ -12,19 +12,19 @@ class CatViewModelTests: XCTestCase {
     
     var sut: ImageDetailViewModel! // System Under Test
     var mockAPIService: MockAPIService!
-    var cat: ImageDetail!
+    var imageDetail: ImageDetail!
     
     override func setUpWithError() throws {
         super.setUp()
-        cat = ImageDetail(id: "1", tags: ["cute"])
+        imageDetail = ImageDetail(id: "1", tags: ["cute"])
         mockAPIService = MockAPIService()
-        sut = ImageDetailViewModel(cat: cat, requestManager: mockAPIService)
+        sut = ImageDetailViewModel(imageDetail: imageDetail, requestManager: mockAPIService)
     }
     
     override func tearDownWithError() throws {
         sut = nil
         mockAPIService = nil
-        cat = nil
+        imageDetail = nil
         super.tearDown()
     }
     
@@ -32,10 +32,15 @@ class CatViewModelTests: XCTestCase {
         let knownImageData = Data(repeating: 0, count: 5)
         sut.imageData = knownImageData
         
-        XCTAssertEqual(sut.tags, ["CUTE"], "The tags property should return the cat's tags in uppercase.")
-        XCTAssertEqual(sut.imageData, knownImageData, "The imageData property should return the set data.")
+        XCTAssertEqual(sut.tags, ["CUTE"])
+        XCTAssertEqual(sut.imageData, knownImageData)
+        XCTAssertEqual(sut.caption, "Owned by")
         
         sut.imageData = nil
+    }
+    
+    func testApiUrl() {
+        XCTAssertEqual(sut.api, "https://cataas.com/cat/")
     }
     
     func testDownloadImageSuccess() {
@@ -51,7 +56,7 @@ class CatViewModelTests: XCTestCase {
             expectation.fulfill()
         }
         
-        sut.downloadImage()
+        sut.loadData()
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
@@ -67,7 +72,7 @@ class CatViewModelTests: XCTestCase {
             expectation.fulfill()
         }
         
-        sut.downloadImage()
+        sut.loadData()
         waitForExpectations(timeout: 1.0, handler: nil)
     }
 }
