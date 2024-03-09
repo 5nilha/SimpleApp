@@ -43,13 +43,13 @@ class BaseViewController: UIViewController {
     
     func stylePresentation() {
         modalPresentationStyle = .overFullScreen
-        view.backgroundColor = ColorPalette.white
+        view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
     }
     
     func addNavigationBackButton() {
         let image = UIImage(systemName: "arrow.left.circle.fill")?.withRenderingMode(.alwaysTemplate).withTintColor(.gray)
         let barButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backButtonTapped))
-        barButtonItem.tintColor = ColorPalette.primary
+        barButtonItem.tintColor = ThemeManager.shared.currentTheme.primaryColor
         navigationItem.leftBarButtonItem = barButtonItem
     }
 

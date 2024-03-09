@@ -34,6 +34,8 @@
 		3E3591332B9B9EDA00DCEB84 /* ServiceRequestManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3591322B9B9EDA00DCEB84 /* ServiceRequestManagerTests.swift */; };
 		3E3591352B9B9F3C00DCEB84 /* MockModelDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3591342B9B9F3C00DCEB84 /* MockModelDecodable.swift */; };
 		3E3591392B9BE97C00DCEB84 /* RequestErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3591382B9BE97C00DCEB84 /* RequestErrorTests.swift */; };
+		3E35913C2B9BF31C00DCEB84 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35913B2B9BF31C00DCEB84 /* Theme.swift */; };
+		3E35913E2B9BF37B00DCEB84 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35913D2B9BF37B00DCEB84 /* ThemeManager.swift */; };
 		3E6E4CE32B90307A006D4CD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4CE22B90307A006D4CD2 /* AppDelegate.swift */; };
 		3E6E4CE52B90307A006D4CD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E4CE42B90307A006D4CD2 /* SceneDelegate.swift */; };
 		3E6E4CEC2B90307D006D4CD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E6E4CEB2B90307D006D4CD2 /* Assets.xcassets */; };
@@ -96,6 +98,8 @@
 		3E3591322B9B9EDA00DCEB84 /* ServiceRequestManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequestManagerTests.swift; sourceTree = "<group>"; };
 		3E3591342B9B9F3C00DCEB84 /* MockModelDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockModelDecodable.swift; sourceTree = "<group>"; };
 		3E3591382B9BE97C00DCEB84 /* RequestErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestErrorTests.swift; sourceTree = "<group>"; };
+		3E35913B2B9BF31C00DCEB84 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		3E35913D2B9BF37B00DCEB84 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		3E6E4CDF2B90307A006D4CD2 /* SimpleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E6E4CE22B90307A006D4CD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E6E4CE42B90307A006D4CD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -247,6 +251,15 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		3E35913A2B9BF30900DCEB84 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				3E35913B2B9BF31C00DCEB84 /* Theme.swift */,
+				3E35913D2B9BF37B00DCEB84 /* ThemeManager.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		3E6E4CD62B90307A006D4CD2 = {
 			isa = PBXGroup;
 			children = (
@@ -348,6 +361,7 @@
 		3E6E4D162B903357006D4CD2 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				3E35913A2B9BF30900DCEB84 /* Theme */,
 				3E3590F62B97789000DCEB84 /* ColorPalette */,
 				3E6E4D362B953092006D4CD2 /* Configs */,
 				3E6E4D352B95307E006D4CD2 /* Log */,
@@ -675,6 +689,7 @@
 				3E6E4D1D2B90368D006D4CD2 /* Cat.swift in Sources */,
 				3E6E4CE52B90307A006D4CD2 /* SceneDelegate.swift in Sources */,
 				3E3590FE2B97BFCE00DCEB84 /* String+Extension.swift in Sources */,
+				3E35913C2B9BF31C00DCEB84 /* Theme.swift in Sources */,
 				3E35910C2B99136200DCEB84 /* TagView.swift in Sources */,
 				3E35910A2B99134200DCEB84 /* TagsListView.swift in Sources */,
 				3E3590F82B9778B900DCEB84 /* ColorPalette.swift in Sources */,
@@ -689,6 +704,7 @@
 				3E6E4D242B90D42A006D4CD2 /* Logger.swift in Sources */,
 				3E3591112B9918A000DCEB84 /* UIImage+extension.swift in Sources */,
 				3E3591182B9A4CD100DCEB84 /* LoadingSpinnerView.swift in Sources */,
+				3E35913E2B9BF37B00DCEB84 /* ThemeManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

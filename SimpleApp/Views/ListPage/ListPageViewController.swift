@@ -26,8 +26,8 @@ class ListPageViewController: BaseViewController, UISearchResultsUpdating {
     
     let headlineLabel: UILabel = {
         let label = UILabel()
-        label.textColor = ColorPalette.darkGray
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.textColor = ThemeManager.shared.currentTheme.textTitleColor
+        label.font = ThemeManager.shared.currentTheme.headLineFont
         label.textAlignment = .right
         label.accessibilityTraits = .staticText
         label.accessibilityIdentifier = "ListPageViewControllerTitleLabel"
@@ -38,7 +38,7 @@ class ListPageViewController: BaseViewController, UISearchResultsUpdating {
     
     var separator: UIView = {
         let view = UIView()
-        view.backgroundColor = ColorPalette.primary
+        view.backgroundColor = ThemeManager.shared.currentTheme.primaryColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

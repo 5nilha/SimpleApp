@@ -11,6 +11,14 @@ class ListPageCell: UITableViewCell {
     
     static let identifier: String = "ListPageCell"
     
+    // MARK: - UI Constants
+    enum UIDimensions {
+        static let topMargin: CGFloat = 10
+        static let sideMargin: CGFloat = 16
+        static let bottomMargin: CGFloat = 10
+        static let imageSize: CGFloat = 60
+    }
+    
     let gifImageView: UIImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "cat")
@@ -22,8 +30,8 @@ class ListPageCell: UITableViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = ColorPalette.darkGray
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.textColor =  ThemeManager.shared.currentTheme.textTitleColor
+        label.font =  ThemeManager.shared.currentTheme.headLineFont
         label.textAlignment = .left
         label.accessibilityTraits = .staticText
         label.accessibilityIdentifier = "ListPageCellTitleLabel"
@@ -34,8 +42,8 @@ class ListPageCell: UITableViewCell {
     
     let tagsLabel: UILabel = {
         let label = UILabel()
-        label.textColor = ColorPalette.gray
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textColor =  ThemeManager.shared.currentTheme.textBodyColor
+        label.font =  ThemeManager.shared.currentTheme.captionFont
         label.textAlignment = .left
         label.accessibilityTraits = .staticText
         label.numberOfLines = 0
@@ -73,16 +81,16 @@ class ListPageCell: UITableViewCell {
     private func applyConstraints() {
         NSLayoutConstraint.activate([
             gifImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            gifImageView.widthAnchor.constraint(equalToConstant: 60),
-            gifImageView.heightAnchor.constraint(equalToConstant: 60),
-            gifImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.topAnchor.constraint(equalTo: gifImageView.topAnchor, constant: 0),
-            titleLabel.leadingAnchor.constraint(equalTo: gifImageView.trailingAnchor, constant: 22),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            tagsLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 15),
+            gifImageView.widthAnchor.constraint(equalToConstant: UIDimensions.imageSize),
+            gifImageView.heightAnchor.constraint(equalToConstant: UIDimensions.imageSize),
+            gifImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: UIDimensions.sideMargin),
+            titleLabel.topAnchor.constraint(equalTo: gifImageView.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: gifImageView.trailingAnchor, constant: UIDimensions.sideMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -UIDimensions.sideMargin),
+            tagsLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: UIDimensions.sideMargin),
             tagsLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             tagsLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            tagsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+            tagsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -UIDimensions.bottomMargin)
         ])
         
         gifImageView.layer.cornerRadius = 12

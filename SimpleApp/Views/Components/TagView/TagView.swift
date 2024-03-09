@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TagView: UIView {
+class TagView: BaseView {
 
     // MARK: - UI Constants
     enum UIDimensions {
@@ -25,17 +25,11 @@ class TagView: UIView {
         }
     }
     
-    var textColor: UIColor = ColorPalette.white {
-        didSet {
-            textLabel.textColor = textColor
-        }
-    }
-    
     let textLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = ColorPalette.white
-        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.textColor = ThemeManager.shared.currentTheme.secondaryColor
+        label.font = ThemeManager.shared.currentTheme.captionFont
         label.accessibilityTraits = .staticText
         return label
     }()
@@ -60,7 +54,7 @@ class TagView: UIView {
     }
     
     private func setupView() {
-        backgroundColor = ColorPalette.primary
+        backgroundColor =  ThemeManager.shared.currentTheme.primaryColor
         
         safeAddSubview(textLabel)
         

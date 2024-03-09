@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CardView: UIView {
+class CardView: BaseView {
     
     // MARK: - UI Constants
     enum UIDimensions {
@@ -42,7 +42,7 @@ class CardView: UIView {
         vStack.alignment = .fill
         vStack.axis = .vertical
         vStack.spacing = 15
-        vStack.backgroundColor = .black.withAlphaComponent(0.5)
+        vStack.backgroundColor = ThemeManager.shared.currentTheme.secondaryColor.withAlphaComponent(0.5)
         vStack.translatesAutoresizingMaskIntoConstraints = false
         return vStack
     }()
@@ -57,8 +57,8 @@ class CardView: UIView {
 
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = ColorPalette.white
-        label.font = UIFont.preferredFont(forTextStyle: .title2)
+        label.textColor = ThemeManager.shared.currentTheme.textTitleColor
+        label.font = ThemeManager.shared.currentTheme.titleFont
         label.textAlignment = .center
         label.numberOfLines = 0
         label.accessibilityTraits = .staticText
@@ -70,8 +70,8 @@ class CardView: UIView {
     
     let captionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = ColorPalette.white
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textColor = ThemeManager.shared.currentTheme.textBodyColor
+        label.font = ThemeManager.shared.currentTheme.captionFont
         label.text = "Owned by"
         label.textAlignment = .center
         label.accessibilityTraits = .staticText
@@ -111,7 +111,6 @@ class CardView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = ColorPalette.white
         safeAddSubview(cardImageView)
         safeAddSubview(mainStackView)
         titleStackView.addArrangedSubview(captionLabel)
@@ -122,7 +121,6 @@ class CardView: UIView {
         setTags()
         
         NSLayoutConstraint.activate([
-//            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: UIDimensions.topMargin),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIDimensions.bottomMargin),

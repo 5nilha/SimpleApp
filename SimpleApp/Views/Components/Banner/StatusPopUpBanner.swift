@@ -61,7 +61,7 @@ final class StatusPopupBanner: BaseView {
     private var messageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.font = ThemeManager.shared.currentTheme.captionFont
         label.textColor = ColorPalette.gray
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -108,7 +108,7 @@ extension StatusPopupBanner {
     /// Sets initial properties for the view.
     private func setViewProperties() {
         accessibilityIdentifier = "StatusPopupBanner"
-        backgroundColor = UIColor(red: 240.0 / 255.0, green: 240.0 / 255.0, blue: 240.0 / 255.0, alpha: 1) //Default color
+        backgroundColor = ThemeManager.shared.currentTheme.accentColor
     }
 
     /// Adds the outer stack view and its constraints to the view.
