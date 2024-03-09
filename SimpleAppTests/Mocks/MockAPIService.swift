@@ -13,6 +13,11 @@ class MockAPIService: APIService {
     var result: Result<[ImageDetail], RequestError>?
     var downloadImageResult: Result<Data, RequestError>?
     
+    func buildUrl(api: String, endpoint: String?) -> URL? {
+        guard let url = URL(string: "\(api)\(endpoint ?? "")") else { return nil }
+        return url
+    }
+    
     func buildURLRequest(for url: URL, method: HttpMethod, queryItems: [String : String?]?, headers: [String : String]?, cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) -> URLRequest {
         return URLRequest(url: url)
     }
