@@ -10,7 +10,7 @@ import XCTest
 
 class MockAPIService: APIService {
     
-    var result: Result<[Cat], RequestError>?
+    var result: Result<[ImageDetail], RequestError>?
     var downloadImageResult: Result<Data, RequestError>?
     
     func buildURLRequest(for url: URL, method: HttpMethod, queryItems: [String : String?]?, headers: [String : String]?, cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) -> URLRequest {

@@ -1,5 +1,5 @@
 //
-//  Cat.swift
+//  ImageDetail.swift
 //  SimpleApp
 //
 //  Created by Fabio Quintanilha on 2/29/24.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct Cat: Decodable {
+struct ImageDetail: Decodable {
     let id: String
     let tags: [String]
-    private (set) var owner: String? = Cat.generateUniqueUsername()
+    private (set) var title: String? = ImageDetail.generateUniqueUsername()
     
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -21,13 +21,13 @@ struct Cat: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
         tags = try container.decode([String].self, forKey: .tags)
-        owner = Cat.generateUniqueUsername()
+        title = ImageDetail.generateUniqueUsername()
     }
     
     init(id: String, tags: [String]) {
         self.id = id
         self.tags = tags
-        owner = Cat.generateUniqueUsername()
+        title = ImageDetail.generateUniqueUsername()
     }
     
     //Faking the user name since the real API doesn't have the data

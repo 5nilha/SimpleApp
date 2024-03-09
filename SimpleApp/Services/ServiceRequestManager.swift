@@ -13,12 +13,17 @@ typealias RequestCompletion<Model: Decodable> = (Result<Model, RequestError>) ->
 /// Protocol defining the requirements for an API service, including a method to fetch items from a network request.
 protocol APIService {
     func fetchItems<Model: Decodable>(with request: URLRequest, of type: Model.Type, completion: @escaping RequestCompletion<Model>)
+    func buildUrl(api: String, endpoint: String?) -> URL?
     func buildURLRequest(for url: URL, method: HttpMethod, queryItems: [String: String?]?, headers: [String: String]?, cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) -> URLRequest
     func downloadImage(_ url: URL, completion: @escaping (Result<Data, RequestError>) -> Void)
     func cancelCurrentTask()
 }
 
 extension APIService {
+    func buildUrl(api: String) -> URL? {
+        buildUrl(api: api, endpoint: nil)
+    }
+    
     func buildURLRequest(for url: URL, method: HttpMethod, queryItems: [String: String?]?) -> URLRequest? {
         buildURLRequest(for: url, method: method, queryItems: queryItems, headers: nil, cachePolicy: URLRequest.CachePolicy.useProtocolCachePolicy, timeout: 30)
     }
@@ -67,6 +72,12 @@ final class ServiceRequestManager: APIService {
         guard let task = currentTask else { return }
         tasks.removeValue(forKey: "\(task.taskIdentifier)")
         currentTask = nil
+    }
+    
+    public func buildUrl(api: String, endpoint: String? = nil) -> URL? {
+        guard let url = URL(string: "\(api)\(endpoint ?? "")")
+        else { return nil }
+        return url
     }
     
     /// Builds a URLRequest with the specified URL, HTTP method, and optional headers.

@@ -165,14 +165,14 @@ extension ListPageViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListPageCell.identifier, for: indexPath) as? ListPageCell
         else { return UITableViewCell() }
-        let item = list[indexPath.item] as? CatViewModel
+        let item = list[indexPath.item] as? ImageDetailViewModel
         cell.configure(with: item)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailsViewController()
-        vc.catViewModel = list[indexPath.item] as? CatViewModel
+        vc.viewModel = list[indexPath.item] as? ImageDetailViewModel
         navigationController?.pushViewController(vc, animated: true)
     }
 }

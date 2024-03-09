@@ -10,7 +10,7 @@ import UIKit
 class DetailsViewController: BaseViewController {
     
     var requestManager = ServiceRequestManager.shared
-    var catViewModel: CatViewModel?
+    var viewModel: ImageDetailViewModel?
     
     let cardView: CardView = {
         let view = CardView()
@@ -40,8 +40,8 @@ class DetailsViewController: BaseViewController {
     }
     
     private func setupViewModel() {
-        catViewModel?.requestManager = ServiceRequestManager.shared
-        catViewModel?.onImageDownloadError = { [weak self] error in
+        viewModel?.requestManager = ServiceRequestManager.shared
+        viewModel?.onImageDownloadError = { [weak self] error in
             self?.dismissLoadingSpinner()
             self?.showStatusPopupBanner(text: error.userMessage)
         }
@@ -51,14 +51,14 @@ class DetailsViewController: BaseViewController {
                                                          leading: cardView.cardImageView.leadingAnchor,
                                                          trailing: cardView.cardImageView.trailingAnchor)
 
-        catViewModel?.onImageDownloaded = { [weak self] imageData in
+        viewModel?.onImageDownloaded = { [weak self] imageData in
             self?.dismissLoadingSpinner()
             self?.cardView.image = UIImage.gif(data: imageData)
             self?.cardView.cardImageView.alpha = 1
         }
 
         showLoadingSpinner(withBackground: .clear)
-        catViewModel?.downloadImage()
+        viewModel?.loadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -80,7 +80,7 @@ class DetailsViewController: BaseViewController {
     private func setCardView() {
         cardView.image = UIImage(named: "cat")
         cardView.cardImageView.alpha = 0.4
-        cardView.tags = catViewModel?.tags
-        cardView.title = catViewModel?.owner
+        cardView.tags = viewModel?.tags
+        cardView.title = viewModel?.title
     }
 }

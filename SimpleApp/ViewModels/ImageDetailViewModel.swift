@@ -1,5 +1,5 @@
 //
-//  CatViewModel.swift
+//  ImageDetailViewModel.swift
 //  SimpleApp
 //
 //  Created by Fabio Quintanilha on 3/6/24.
@@ -7,35 +7,43 @@
 
 import Foundation
 
-class CatViewModel {
+class ImageDetailViewModel: Requestable {
     
-    private var cat: Cat
+    private var imageDetail: ImageDetail
     var requestManager: APIService?
     var onImageDownloadError: ((RequestError) -> Void)?
     var onImageDownloaded: ((Data) -> Void)?
     
-    init(cat: Cat, requestManager: APIService? = ServiceRequestManager.shared) {
+    init(imageDetail: ImageDetail, requestManager: APIService? = ServiceRequestManager.shared) {
         self.requestManager = requestManager
-        self.cat = cat
+        self.imageDetail = imageDetail
     }
     
-    private var id: String {
-        return cat.id
+    public var id: String {
+        return imageDetail.id
     }
 
     public var tags: [String] {
-        return cat.tags.map{ $0.uppercased() }
+        return imageDetail.tags.map{ $0.uppercased() }
     }
     
-    public var owner: String? {
-        return cat.owner
+    public var title: String? {
+        return imageDetail.title
+    }
+    
+    public var caption: String? {
+        return "Owned by"
     }
 
     public var imageData: Data?
     
-    func downloadImage(for tag: String? = nil) {
+    var api: String {
+        return "https://cataas.com/cat/"
+    }
+    
+    func loadData(for tag: String? = nil) {
         let endpoint = tag ?? id
-        guard let url = URL(string: "https://cataas.com/cat/\(endpoint)")
+        guard let url = requestManager?.buildUrl(api: api, endpoint: endpoint)
         else { return }
 
         DispatchQueue.global().async { [weak self] in

@@ -10,15 +10,15 @@ import XCTest
 
 class CatViewModelTests: XCTestCase {
     
-    var sut: CatViewModel! // System Under Test
+    var sut: ImageDetailViewModel! // System Under Test
     var mockAPIService: MockAPIService!
-    var cat: Cat!
+    var cat: ImageDetail!
     
     override func setUpWithError() throws {
         super.setUp()
-        cat = Cat(id: "1", tags: ["cute"])
+        cat = ImageDetail(id: "1", tags: ["cute"])
         mockAPIService = MockAPIService()
-        sut = CatViewModel(cat: cat, requestManager: mockAPIService)
+        sut = ImageDetailViewModel(cat: cat, requestManager: mockAPIService)
     }
     
     override func tearDownWithError() throws {

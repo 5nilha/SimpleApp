@@ -96,18 +96,18 @@ class ListPageCell: UITableViewCell {
         gifImageView.layer.cornerRadius = 12
     }
     
-    func configure(with viewModel: CatViewModel?) {
+    func configure(with viewModel: ImageDetailViewModel?) {
         guard let vm = viewModel else { return }
         
         gifImageView.image = UIImage(named: "cat_blue_face")
         gifImageView.alpha = 0.6
-        titleLabel.text = vm.owner
+        titleLabel.text = vm.title
         tagsLabel.text = vm.tags.joined(separator: ", ").uppercased()
         
         viewModel?.onImageDownloaded = { [weak self] imageData in
             self?.gifImageView.image = UIImage(data: imageData)
             self?.gifImageView.alpha = 1
         }
-        viewModel?.downloadImage()
+        viewModel?.loadData()
     }
 }

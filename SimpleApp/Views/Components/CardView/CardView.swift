@@ -24,6 +24,12 @@ class CardView: BaseView {
         }
     }
     
+    var caption: String?  {
+        didSet {
+            captionLabel.text = caption
+        }
+    }
+    
     var image: UIImage? {
         didSet {
             setImage()
@@ -72,7 +78,6 @@ class CardView: BaseView {
         let label = UILabel()
         label.textColor = ThemeManager.shared.currentTheme.textBodyColor
         label.font = ThemeManager.shared.currentTheme.captionFont
-        label.text = "Owned by"
         label.textAlignment = .center
         label.accessibilityTraits = .staticText
         label.accessibilityIdentifier = "CardViewSubtitleLabel"

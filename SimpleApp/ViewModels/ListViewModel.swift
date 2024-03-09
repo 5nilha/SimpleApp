@@ -7,11 +7,22 @@
 
 import Foundation
 
-open class ListViewModel {
+protocol Requestable {
+    var api: String { get }
+    func loadData(for tag: String?)
+}
+
+extension Requestable {
+    func loadData() {
+        loadData(for: nil)
+    }
+}
+
+open class ListViewModel: Requestable {
     
-    var list: [CatViewModel] = []
+    var list: [ImageDetailViewModel] = []
     var requestManager: APIService?
-    var onLoadData: ((Result<[CatViewModel], RequestError>) -> Void)?
+    var onLoadData: ((Result<[ImageDetailViewModel], RequestError>) -> Void)?
     
     init(requestManager: APIService) {
         self.requestManager = requestManager
@@ -21,36 +32,41 @@ open class ListViewModel {
         return list.count
     }
     
-    func searchFor(tag: String?) -> [CatViewModel] {
+    func searchFor(tag: String?) -> [ImageDetailViewModel] {
         guard let searchedTag = tag, !searchedTag.isEmpty else { return list }
         let filteredList = list.filter { catViewModel in
             catViewModel.tags.contains(where: { $0.lowercased() == searchedTag.lowercased() })
         }
         if filteredList.isEmpty {
-            loadData(tag: tag)
+            loadData(for: tag)
             return list
         } else {
             return filteredList
         }
     }
     
-    func selectItemAt(_ itemIndex: Int) -> CatViewModel? {
+    func selectItemAt(_ itemIndex: Int) -> ImageDetailViewModel? {
         guard list.count > itemIndex else { return nil }
         return list[itemIndex]
     }
     
-    func loadData(tag: String? = nil) {
+    var api: String {
+        return "https://cataas.com/api/cats"
+    }
+    
+    func loadData(for tag: String? = nil) {
         let queryItems = tag != nil ? ["tags": tag] : nil
-        guard let url = URL(string: "https://cataas.com/api/cats"),
+        guard let url = requestManager?.buildUrl(api: api),
               let request = requestManager?.buildURLRequest(for: url,
                                                             method: .get,
                                                             queryItems: queryItems)
             else { return }
-        requestManager?.fetchItems(with: request, of: [Cat].self, completion: { [weak self] result in
+        
+        requestManager?.fetchItems(with: request, of: [ImageDetail].self, completion: { [weak self] result in
             guard let wself = self else  { return }
             switch result {
-            case .success(let cats):
-                wself.list = cats.map { CatViewModel(cat: $0) }
+            case .success(let imagesDetails):
+                wself.list = imagesDetails.map { ImageDetailViewModel(imageDetail: $0) }
                 
                 DispatchQueue.main.async {
                     wself.onLoadData?(.success(wself.list))

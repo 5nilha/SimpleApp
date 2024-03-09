@@ -27,7 +27,7 @@ class ListViewModelTests: XCTestCase {
     
     func testWhenOnLoadData_thenSuccessUpdatesList() {
         let expectation = self.expectation(description: "Success loadData")
-        mockAPIService.result = .success([Cat(id: "1", tags: ["cute"])])
+        mockAPIService.result = .success([ImageDetail(id: "1", tags: ["cute"])])
         
         sut.onLoadData = { [weak self] result in
             guard let wself = self else { return }
@@ -87,8 +87,8 @@ class ListViewModelTests: XCTestCase {
     }
     
     func testWhenSearchForTag_thenFiltersList() {
-        sut.list = [CatViewModel(cat: Cat(id: "1", tags: ["cute"])),
-                    CatViewModel(cat: Cat(id: "2", tags: ["lazy"]))]
+        sut.list = [ImageDetailViewModel(cat: ImageDetail(id: "1", tags: ["cute"])),
+                    ImageDetailViewModel(cat: ImageDetail(id: "2", tags: ["lazy"]))]
         
         XCTAssertEqual(sut.numOfItems, 2)
         
