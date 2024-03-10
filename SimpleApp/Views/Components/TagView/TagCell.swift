@@ -38,7 +38,7 @@ class TagCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        tagView.text = nil
+        tagView.text = ""
     }
     
     func configure(with text: String) {

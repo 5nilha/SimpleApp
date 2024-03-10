@@ -17,9 +17,7 @@ class TagView: BaseView {
         static let height: CGFloat = 30
     }
     
-    var tagIndex: Int = 0
-    
-    var text: String? {
+    var text: String = "" {
         didSet {
             setText()
         }
@@ -70,6 +68,6 @@ class TagView: BaseView {
     private func setText() {
         textLabel.text = text
         textLabel.accessibilityValue = text
-        textLabel.accessibilityIdentifier = "\(text ?? "\(tagIndex)")_textLabel_tag"
+        textLabel.accessibilityIdentifier = "\(text)_textLabel_tag"
     }
 }

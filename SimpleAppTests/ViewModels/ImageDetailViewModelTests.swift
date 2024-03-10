@@ -1,5 +1,5 @@
 //
-//  CatViewModelTests.swift
+//  ImageDetailViewModelTests.swift
 //  SimpleAppTests
 //
 //  Created by Fabio Quintanilha on 3/8/24.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import SimpleApp
 
-class CatViewModelTests: XCTestCase {
+class ImageDetailViewModelTests: XCTestCase {
     
     var sut: ImageDetailViewModel! // System Under Test
     var mockAPIService: MockAPIService!

@@ -6,6 +6,7 @@ target 'SimpleApp' do
   use_frameworks!
 
   # Pods for SimpleApp
+  pod 'lottie-ios'
 
   target 'SimpleAppTests' do
     inherit! :search_paths
